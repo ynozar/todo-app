@@ -1,0 +1,26 @@
+name: Deploy to Azure
+
+on: workflow_dispatch
+
+jobs:
+  push_to_azure:
+    name: deploy to azure
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+      attestations: write
+      id-token: write
+    steps:
+      - name: Log in to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+    
+      - name: Build and deploy Container App
+        uses: azure/container-apps-deploy-action@v1
+        with:
+          acrName: myregistry
+          containerAppName: my-container-app
+          resourceGroup: my-rg
+          imageToDeploy: myregistry.azurecr.io/app:latest
