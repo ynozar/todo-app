@@ -1,0 +1,46 @@
+services:
+  ui:
+    build:
+      context: UI
+      dockerfile: Dockerfile
+    container_name: ui-container
+    image: ui:latest
+    ports:
+      - 4200:4200
+    develop:
+      watch:
+        - action: sync
+          path: UI
+          target: /app
+          ignore:
+            - ./UI/node_modules
+        - action: rebuild
+          path: ./UI/package.json
+  db:
+    image: postgres:latest
+    container_name: db-container
+    ports:
+      - 5432:5432
+    volumes:
+      - db_volume:/var/lib/postgresql/data
+    env_file:
+      - .env
+  todo-api:
+    build:
+      context: ToDoBackend/ToDoBackend
+      dockerfile: Dockerfile
+    container_name: todo-api-container
+    image: todo-api:latest
+    ports:
+      - 8080:8080
+    develop:
+      watch:
+        - action: rebuild
+          path: ./ToDoBackend/ToDoBackend/bin/Debug/
+    depends_on:
+      - "db"
+    env_file:
+      - .env
+volumes:
+  db_volume:
+    external: false

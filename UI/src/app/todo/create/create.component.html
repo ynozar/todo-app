@@ -1,0 +1,96 @@
+<app-navbar (toggleDrawerEvent)="openDrawer()" [name]="decodedToken.full_name.split(' ')[0]"/>
+
+<br>
+<div class="flex mx-auto test-table">
+  <div class="text-sm breadcrumbs">
+    <ul>
+      <li><a href="/home">Home</a></li>
+      <li><a href="/home#todos">ToDos</a></li>
+      <li><a>Create</a></li>
+    </ul>
+  </div></div>
+
+<br>
+<div class="flex justify-center mx-auto test-table rounded-box">
+  <div class="hero bg-base-200 rounded-box ">
+    <div class=" flex w-full">
+      <div class="max-md:m-auto p-4 md:p-16 w-full max-w-[500px]">
+        <h1 class="text-2xl font-bold " ><span class="border-b-4 border-primary">New ToDo</span>
+        </h1>
+        <br>
+        <form [formGroup]="todoFormGroup">
+        <span class="label-text">Title</span>
+        <label class="input input-bordered flex items-center gap-2 ">
+          <input type="text" placeholder="ToDo" formControlName="title"/>
+        </label>
+        <br>
+        <label class="form-control">
+          <div class="label">
+            <span class="label-text">Select a group</span>
+            <span class="label-text-alt"><div class="badge badge-success badge-xs">Optional</div></span>
+          </div>
+          <select class="select select-bordered" formControlName="groupUid">
+            <option selected [ngValue]="null">-------</option>
+            <option *ngFor="let group of groups" [ngValue]="group.uid">
+              {{group.name}}
+            </option>
+          </select>
+        </label>
+        <br>
+        <div class="">
+          <app-datetime-selector (dateTime)="setDateTime($event)"/>
+          </div>
+        <div class="flex justify-between items-end">
+          <div>
+          <div class="label">
+            <span class="label-text">Priority:</span>
+          </div>
+        <app-rating [rating]=0 (ratingChange)="setPriority($event)"></app-rating>
+          </div>
+        <button class="btn btn-success" (click)="onSubmit()" [disabled]="!checkSubmit()">Create ToDo</button></div>
+        </form>
+      </div>
+
+
+
+  </div>
+
+</div>
+
+
+
+</div>
+<div class="flex justify-items-start mx-auto ">
+  <br></div>
+<div class="flex justify-center ">
+  <div class="divider w-96 text-xl">Description</div></div>
+<br>
+<div class="desc-container">
+
+  <!-- Look into container stuff!!-->
+  <div class="w-3/4 bg-white rounded-box">
+
+    <div #toolbar class=""></div>
+    <div #editorContainer class="editor-container min-h-80"></div>
+
+  </div>
+
+  <br><br>
+
+  <div #editorRef class="editor-container"></div>
+  <!--<button class="btn btn-primary" (click)="setToast($event)" >Send Toast</button>-->
+</div>
+<br><br>
+
+<!--Drawer Setup-->
+<div class="drawer drawer-end z-50">
+  <input id="my-drawer-4" type="checkbox" class="drawer-toggle" [checked]="drawerOpen" (change)="closeDrawer()"/>
+  <div class="drawer-content">
+    <label for="my-drawer-4" class="drawer-button btn btn-primary hidden">Open drawer</label>
+  </div>
+  <div class="drawer-side">
+    <label for="my-drawer-4" aria-label="close sidebar" class="drawer-overlay"></label>
+    <app-drawer></app-drawer>
+  </div>
+</div>
+

@@ -1,0 +1,130 @@
+<!-- put in its own component-->
+<div class="bg-base-200 rounded-box">
+  <div class="text-center">
+
+      <div class="flex max-lg:flex-col">
+        <div class=" lg:w-1/2 lg:p-8 p-4 h-96 w-full lg:ml-2 mx-auto items-center">
+          <div class="mx-auto items-center">
+
+          <table class="table-auto w-fit mx-auto">
+            <th colspan="2"> <h1 class="text-2xl font-bold text-center">Filters</h1>
+              <br/></th>
+            <tbody>
+            <tr>
+              <td><p>Search:&emsp;</p></td>
+              <td class="">
+                <label class="input input-bordered border-primary flex items-center gap-2 max-sm:w-48 w-full max-w-xs ">
+                  <input id="search-input" type="text" class="grow search-input"  [(ngModel)]="searchQuery" placeholder="ToDo or Group" (input)="searchItem()" />
+                  <kbd class="kbd kbd-sm max-sm:hidden">⌘</kbd>
+                  <kbd class="kbd kbd-sm max-sm:hidden">K</kbd>
+                </label></td>
+            </tr>
+            <br>
+            <tr>
+              <td><p>Status:&emsp;</p></td>
+              <td>
+                <select (change)="filterByStatus($event)" class="select select-primary max-sm:w-48 w-full max-w-xs flex items-center">
+                  <option selected>----------</option>
+                  <option>Completed Only</option>
+                  <option>Uncompleted Only</option>
+                </select>
+
+              </td></tr>
+            <br>
+
+            <tr>
+              <td><p class="text-nowrap">Sort By:&emsp;</p></td>
+              <td>
+                <select [(ngModel)]="sortByVal" (change)="sortBy($event)" class="select select-primary max-sm:w-48 w-full max-w-xs flex items-center">
+                  <option selected>----------</option>
+                  <option>Due Date</option>
+                  <option>Priority</option>
+                  <option>Status</option>
+                  <option>Title</option>
+                </select>
+
+              </td></tr>
+
+            <tr><td></td><td>
+              <div class="form-control max-sm:w-48 w-full max-w-xs ">
+                <label class="label cursor-pointer">
+                  <span class="label-text">Ascending?</span>
+                  <input [(ngModel)]="ascending" (change)="reverse()" id="hero-ascending" type="checkbox" class="checkbox checkbox-primary" />
+                </label>
+              </div>
+            </td></tr>
+
+            <tr>
+              <td><p>Priority:&emsp;</p></td>
+              <td class="flex justify-items-start">
+                <!-- Update to Bind rating obj if needed-->
+                <app-rating (ratingChange)="filterByPriority($event)" [canBeEmpty]=true></app-rating>
+              </td></tr>
+
+            </tbody>
+          </table>
+        </div>
+        </div>
+        <div class=" lg:w-1/2 lg:p-8 p-4 items-center w-full lg:mr-2 mx-auto">
+          <!-- Second child div content -->
+
+          <div class="max-w-min mx-auto lg:ml-auto">
+            <h1 class="text-2xl font-bold">Statistics</h1>
+            <br>
+            <div>
+          <div class="stats shadow w-full max-sm:stats-vertical">
+
+            <div class="stat ">
+              <div class="stat-figure text-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" class="inline-block w-8 h-8 fill-current"><path d="M268-240 42-466l57-56 170 170 56 56-57 56Zm226 0L268-466l56-57 170 170 368-368 56 57-424 424Zm0-226-57-56 198-198 57 56-198 198Z"/></svg>
+              </div>
+              <div class="stat-title">Tasks Completed</div>
+              <div class="stat-value text-primary">{{ getCompletedTasks() }}</div>
+              <div class="stat-desc">{{ getCompletionRate() }}% Completion Rate!</div>
+            </div>
+
+            <div class="stat ">
+              <div class="stat-figure text-secondary">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"  class="inline-block w-8 h-8 fill-current"><path d="M280-600v-80h560v80H280Zm0 160v-80h560v80H280Zm0 160v-80h560v80H280ZM160-600q-17 0-28.5-11.5T120-640q0-17 11.5-28.5T160-680q17 0 28.5 11.5T200-640q0 17-11.5 28.5T160-600Zm0 160q-17 0-28.5-11.5T120-480q0-17 11.5-28.5T160-520q17 0 28.5 11.5T200-480q0 17-11.5 28.5T160-440Zm0 160q-17 0-28.5-11.5T120-320q0-17 11.5-28.5T160-360q17 0 28.5 11.5T200-320q0 17-11.5 28.5T160-280Z"/></svg>
+               </div>
+              <div class="stat-title">Tasks Left</div>
+              <div class="stat-value text-secondary">{{ getTasksLeft() }}</div>
+              <div class="stat-desc opacity-0">Hidden </div>
+            </div>
+          </div>
+              </div><br><div>
+          <div class="stats shadow w-full max-sm:stats-vertical">
+
+            <div class="stat ">
+              <div class="stat-figure text-red-900">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" class="inline-block w-8 h-8 fill-current"><path d="M480-120q-33 0-56.5-23.5T400-200q0-33 23.5-56.5T480-280q33 0 56.5 23.5T560-200q0 33-23.5 56.5T480-120Zm-80-240v-480h160v480H400Z"/></svg>
+                <!--Icons from https://fonts.google.com/icons?icon.size=24&icon.color=%235f6368-->
+              </div>
+              <div class="stat-title">High Priority Tasks</div>
+              <div class="stat-value text-red-900">{{getPriorityTasks()}}</div>
+              <div class="stat-desc">{{ getPriorityRate() }}% of your remaining tasks</div>
+            </div>
+
+            <div class="stat ">
+              <div class="stat-figure text-info ">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" class="inline-block w-8 h-8 fill-current"><path d="M580-240q-42 0-71-29t-29-71q0-42 29-71t71-29q42 0 71 29t29 71q0 42-29 71t-71 29ZM200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Z"/></svg>
+              </div>
+              <div class="stat-title">Next Due Date</div>
+              <div class="stat-value text-info">{{getNextTask()[0]}}</div>
+              <div class="stat-desc">{{getNextTask()[1]}}</div>
+            </div>
+
+            </div>
+          </div>
+          </div>
+        </div>
+      </div>
+
+
+      </div>
+  </div>
+      <br>
+
+
+
+<br/>

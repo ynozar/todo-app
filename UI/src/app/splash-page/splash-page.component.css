@@ -1,0 +1,14 @@
+.spash-bg { /*convert to tailwind and add l/d mode support*/
+  background-image: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%);
+}
+
+
+/*
+background-image: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+
+background-image: linear-gradient(to top, #accbee 0%, #e7f0fd 100%);
+
+https://webgradients.com
+
+https://www.youtube.com/watch?v=-jRxG84AzCI&list=PL1w1q3fL4pmj9k1FrJ3Pe91EPub2_h4jF&index=6
+*/

@@ -1,0 +1,83 @@
+@import 'quill/dist/quill.snow.css';
+@import 'quill/dist/quill.core.css';
+@import 'quill/dist/quill.bubble.css';
+/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+.yoel-container{
+  display: flex;
+  justify-content: center; /* Horizontally center the content */
+  align-items: center; /* Vertically center the content (optional) */
+  padding: 10px; /* Add some padding */
+  width: 100%; /* Take up the full width of the parent */
+  /* Additional styling if needed */
+}
+
+.desc-container{
+  display: flex;
+  justify-content: center; /* Horizontally center the content */
+  align-items: center; /* Vertically center the content (optional) */
+  width: 100%; /* Take up the full width of the parent */
+  /* Additional styling if needed */
+}
+
+
+.anchor { /* adds offset for navbar*/
+  display: block;
+  position: relative;
+  top: -80px; /* Adjust this value to create some space above the target element */
+  visibility: hidden;
+}
+
+
+.container2 {
+  display: flex;
+  justify-content: center; /* Horizontally center the content */
+  align-items: center; /* Vertically center the content (optional) */
+  padding: 10px; /* Add some padding */
+  width: 100%; /* Take up the full width of the parent */
+  /* Additional styling if needed */
+}
+
+.test-table{
+  width: 80vw;
+
+}
+
+.logoGreen{
+  color: #80ED99;
+  stroke: #041B15;
+  stroke-width: 1px;
+  stroke-linejoin: round;
+  overflow: visible;
+  -webkit-text-stroke-width: 4px;
+  -webkit-text-stroke-color: #041B15;
+}
+
+/* move to navbar */
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+
+.logoGreenNav{
+  color: #80ED99;
+  stroke: #041B15;
+  stroke-width:.1px;
+  stroke-linejoin: round;
+  overflow: visible;
+  -webkit-text-stroke-width: .5px;
+  -webkit-text-stroke-color: #041B15;
+}
+
+/*136F63*/
+.splash-logo{
+  color: #80ED99;
+  align-content: center;
+  align-items: center;
+  text-align: justify-all;
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

@@ -1,0 +1,12 @@
+body{
+  color:#666;
+  font-style:italic;
+}
+
+#element {
+  width:100px;
+  height:100px;
+  background-color:#0EB3EA;
+  position:relative;
+  margin:10px 30px;
+}

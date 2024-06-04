@@ -1,0 +1,37 @@
+<div class="w-full ">
+  <a (click)="openCal()">
+    <span class="label-text">Due Date</span>
+  <label class="input input-bordered flex items-center gap-2 w-full" [ngClass]="{'opacity-50':disabled}" >
+      <input type="text" placeholder="mm/dd/yy" readonly [value]="getDateTime()"/>
+    </label></a>
+
+
+</div>
+
+<div class="relative -top-12 left-0 w-0 h-0 -z-10">
+  <mtx-datetimepicker-toggle class="hidden" [for]="datetimePicker"></mtx-datetimepicker-toggle>
+  <mat-form-field class="">
+
+    <div class="hidden">
+    <input class="hi" id="date-input" (dateChange)="out($event)" type="text" placeholder="d" [mtxDatetimepicker]="datetimePicker" [formControl]="datetime" matInput/>
+    </div>
+      <mtx-datetimepicker
+      #datetimePicker
+      [startAt]="selectedDateTime"
+      [type]="type"
+      [mode]="mode"
+      [multiYearSelector]="multiYearSelector"
+      [calendarHeaderComponent]="customHeader"
+      [startView]="startView"
+      [twelvehour]="twelvehour"
+      [timeInterval]="timeInterval"
+      [touchUi]="touchUi"
+      [timeInput]="timeInput"
+      [opened]="opened"
+      (closed)="closeCal()"
+
+      panelClass="">
+    </mtx-datetimepicker>
+
+  </mat-form-field>
+</div>

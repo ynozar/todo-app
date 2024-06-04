@@ -1,0 +1,98 @@
+<app-navbar (toggleDrawerEvent)="openDrawer()" [name]="decodedToken.full_name.split(' ')[0]"/>
+
+<br>
+<div class="flex mx-auto test-table">
+<div class="text-sm breadcrumbs">
+  <ul>
+    <li><a href="/home">Home</a></li>
+    <li><a href="/home#groups">Groups</a></li>
+    <li><a>{{group?.name ?? ""}}</a></li>
+  </ul>
+</div></div>
+
+<br>
+<div class="flex justify-center mx-auto test-table rounded-box">
+  <div class="hero bg-base-200 rounded-box">
+  <div class="flex max-md:flex-col  w-full">
+        <div class="relative md:w-1/2 md:p-8 p-4 h-56">
+
+          <h1 class="text-2xl font-bold" [ngClass]="{'hidden':isEditing}"><span class="border-b-4 border-primary">{{group?.name ?? ""}}</span>
+        </h1><br [ngClass]="{'hidden':isEditing}">
+
+          <div [ngClass]="{'hidden':!isEditing}">
+          <input type="text" [(ngModel)]="groupName" value="{{group?.name ?? ''}}" class="input input-bordered w-full max-w-xs absolute top-5" />
+            <br>
+          </div>
+          <p class="absolute top-20"><b>Created:</b> {{getDate(group?.createdAt ?? "")}}</p>
+          <p class="absolute top-28" [hidden]="group?.modifiedAt==null"><b>Last Modified:</b> {{getDate(group?.modifiedAt ?? "")}}</p><br>
+          <br [hidden]="group?.modifiedAt!=null">
+
+          <div class="absolute bottom-0 flex items-center join ">
+            <label class="input flex items-center gap-2 join-item md:w-60 w-40 input-bordered" >
+              <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 -1200 1200 1200" [ngClass]="{'opacity-50':!isEditing,'opacity-70':isEditing}"  class="w-12 h-12"  fill="currentColor"><path d="m247-904 57-56 343 343q23 23 23 57t-23 57L457-313q-23 23-57 23t-57-23L153-503q-23-23-23-57t23-57l190-191-96-96Zm153 153L209-560h382L400-751Zm360 471q-33 0-56.5-23.5T680-360q0-21 12.5-45t27.5-45q9-12 19-25t21-25q11 12 21 25t19 25q15 21 27.5 45t12.5 45q0 33-23.5 56.5T760-280ZM80 0v-160h800V0H80Z"/><</svg>
+              <input type="text" class="w-full" [ngClass]="{'opacity-50':!isEditing}" [disabled]="!isEditing" placeholder="{{selectedColor}}" value="{{selectedColor}}" [(ngModel)]="selectedColor" [ngModelOptions]="{standalone: true}"/>
+              <span class="badge badge-success hidden md:inline" [ngClass]="{'opacity-50':!isEditing}">Optional</span>
+            </label>
+            <button class="btn join-item md:w-20 w-16 p-0"  [disabled]="!isEditing"  [ngStyle]="{'background-color':selectedColor}">
+              <input type="color" class="opacity-0 w-full h-full input2" id="body2" value="{{selectedColor}}" [(ngModel)]="selectedColor" [ngModelOptions]="{standalone: true}" />
+            </button>
+          </div>
+
+        </div>
+        <div class="relative md:w-1/2 md:p-8 p-4  text-right">
+
+          <div class="stats w-48 shadow max-md:hidden">
+
+            <div class="stat">
+              <div class="stat-title text-center">Completed</div>
+              <div class="stat-value text-center">{{ getCompPercent() }}%</div>
+              <div class="stat-desc"><progress class="progress progress-success" value="{{getCompPercent()}}" max="100"></progress></div>
+            </div>
+          </div>
+          <br><br>
+          <div class="absolute bottom-0 md:right-8">
+          <div class="join " [ngClass]="{'hidden':isEditing}">
+
+            <button class="btn btn-accent join-item w-28" (click)="editGroup()">Edit</button>
+            <button class="btn btn-error join-item w-28" (click)="deleteGroup()">Delete</button>
+          </div>
+          <div class="join " [ngClass]="{'hidden':!isEditing}">
+
+            <button class="btn btn-success join-item w-28" (click)="saveChanges()">Save</button>
+            <button class="btn btn-error join-item w-28" (click)="discardChanges()">Discard</button>
+          </div></div>
+        </div>
+  </div>
+  <br>
+
+</div>
+
+  </div>
+
+<div class="flex justify-center ">
+  <!-- switch to a proper container and also put in its own component-->
+
+
+</div>
+<div class="flex justify-items-start mx-auto ">
+  <br></div>
+<div class="flex justify-center ">
+  <div class="divider w-96"></div></div>
+<div class="yoel-container">
+  <!-- Look into container stuff!!-->
+  <app-todo-table [groups]="[group]" [(todos)]="todos" [query]="" [singleGroup]="true"></app-todo-table>
+  <!--<button class="btn btn-primary" (click)="setToast($event)" >Send Toast</button>-->
+</div>
+
+<!--Drawer Setup-->
+<div class="drawer drawer-end z-50">
+  <input id="my-drawer-4" type="checkbox" class="drawer-toggle" [checked]="drawerOpen" (change)="closeDrawer()"/>
+  <div class="drawer-content">
+    <label for="my-drawer-4" class="drawer-button btn btn-primary hidden">Open drawer</label>
+  </div>
+  <div class="drawer-side">
+    <label for="my-drawer-4" aria-label="close sidebar" class="drawer-overlay"></label>
+    <app-drawer></app-drawer>
+  </div>
+</div>
+

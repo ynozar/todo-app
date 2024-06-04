@@ -1,0 +1,43 @@
+
+<h3 mat-dialog-title></h3>
+<div role="tablist" class="tabs tabs-bordered">
+  <a role="tab" class="tab " [ngClass]="{'tab-active':showLogin}" (click)="showLogin=true">Sign In</a>
+  <a role="tab" class="tab " [ngClass]="{'tab-active':!showLogin}" (click)="showLogin=false">Sign Up</a>
+</div>
+<mat-dialog-content>
+  <form [formGroup]="myFormGroup" >
+    <span class="label-text text-md" [ngClass]="{'hidden':showLogin}" >Full Name</span>
+  <label class="input input-bordered flex items-center gap-2" [ngClass]="{'hidden':showLogin}">
+    <svg class="w-4 h-4 opacity-70" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+      <path fill-rule="evenodd" d="M4 4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2H4Zm10 5a1 1 0 0 1 1-1h3a1 1 0 1 1 0 2h-3a1 1 0 0 1-1-1Zm0 3a1 1 0 0 1 1-1h3a1 1 0 1 1 0 2h-3a1 1 0 0 1-1-1Zm0 3a1 1 0 0 1 1-1h3a1 1 0 1 1 0 2h-3a1 1 0 0 1-1-1Zm-8-5a3 3 0 1 1 6 0 3 3 0 0 1-6 0Zm1.942 4a3 3 0 0 0-2.847 2.051l-.044.133-.004.012c-.042.126-.055.167-.042.195.006.013.02.023.038.039.032.025.08.064.146.155A1 1 0 0 0 6 17h6a1 1 0 0 0 .811-.415.713.713 0 0 1 .146-.155c.019-.016.031-.026.038-.04.014-.027 0-.068-.042-.194l-.004-.012-.044-.133A3 3 0 0 0 10.059 14H7.942Z" clip-rule="evenodd"/>
+    </svg>
+    <input type="text" class="grow" placeholder="Name" formControlName="fullName"/>
+    </label>
+  <br>
+    <span class="label-text text-md" [ngClass]="{'hidden':showLogin}" >Email</span>
+  <label class="input input-bordered flex items-center gap-2" [ngClass]="{'hidden':showLogin}">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4 opacity-70"><path d="M2.5 3A1.5 1.5 0 0 0 1 4.5v.793c.026.009.051.02.076.032L7.674 8.51c.206.1.446.1.652 0l6.598-3.185A.755.755 0 0 1 15 5.293V4.5A1.5 1.5 0 0 0 13.5 3h-11Z" /><path d="M15 6.954 8.978 9.86a2.25 2.25 0 0 1-1.956 0L1 6.954V11.5A1.5 1.5 0 0 0 2.5 13h11a1.5 1.5 0 0 0 1.5-1.5V6.954Z" /></svg>
+    <input type="text" class="grow" placeholder="Email" formControlName="email"/>
+  </label>
+  <br>
+    <span class="label-text text-md"  >Username</span>
+  <label class="input input-bordered flex items-center gap-2" [ngClass]="{'input-error':wrongPassword}">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4 opacity-70"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM12.735 14c.618 0 1.093-.561.872-1.139a6.002 6.002 0 0 0-11.215 0c-.22.578.254 1.139.872 1.139h9.47Z" /></svg>
+    <input type="text" class="grow" placeholder="Username" formControlName="username"/>
+  </label>
+  <br>
+    <span class="label-text text-md"  >Password</span>
+  <label class="input input-bordered flex items-center gap-2" [ngClass]="{'input-error':wrongPassword}">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4 opacity-70"><path fill-rule="evenodd" d="M14 6a4 4 0 0 1-4.899 3.899l-1.955 1.955a.5.5 0 0 1-.353.146H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2.293a.5.5 0 0 1 .146-.353l3.955-3.955A4 4 0 1 1 14 6Zm-4-2a.75.75 0 0 0 0 1.5.5.5 0 0 1 .5.5.75.75 0 0 0 1.5 0 2 2 0 0 0-2-2Z" clip-rule="evenodd" /></svg>
+    <input type="password" class="grow" placeholder="••••••••" formControlName="password"/>
+  </label>
+  <br>
+    <span class="label-text text-red-600" [ngClass]="{'hidden':!wrongPassword}" >Incorrect username or password</span>
+  <button id="login-btn" class="btn btn-primary w-full" (click)="onSubmit()">{{(showLogin?"Log In":"Sign Up")}}</button>
+    </form >
+
+</mat-dialog-content>
+<!--<mat-dialog-actions>-->
+  <!--<button class="btn btn-primary" (click)="closeModal()">Login</button>-->
+  <!--<button class="btn btn-primary" (click)="closeDialog()">Cancel</button> -->
+<!--</mat-dialog-actions>-->
