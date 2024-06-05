@@ -20,7 +20,7 @@ jobs:
       - name: Build and deploy Container App
         uses: azure/container-apps-deploy-action@v1
         with:
-          acrName: myregistry
-          containerAppName: my-container-app
-          resourceGroup: my-rg
-          imageToDeploy: myregistry.azurecr.io/app:latest
+          acrName: ynozar
+          containerAppName: ui
+          resourceGroup: todo-app
+          imageToDeploy: ynozar/todo-ui
