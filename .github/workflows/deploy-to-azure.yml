@@ -17,7 +17,7 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
     
-      - name: Build and deploy Container App
+      - name: Build and deploy UI Container App
         uses: azure/container-apps-deploy-action@v2
         with:
           registryUrl: docker.io
@@ -26,3 +26,13 @@ jobs:
           containerAppName: ui
           resourceGroup: todo-app
           imageToDeploy: ynozar/todo-ui
+
+      - name: Build and deploy Backend Container App
+        uses: azure/container-apps-deploy-action@v2
+        with:
+          registryUrl: docker.io
+          registryUsername: ${{ secrets.DOCKER_USERNAME }}
+          registryPassword: ${{ secrets.DOCKER_PASSWORD }}
+          containerAppName: backend
+          resourceGroup: todo-app
+          imageToDeploy: ynozar/todo-backend
