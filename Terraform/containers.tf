@@ -36,6 +36,8 @@ ingress {
 
 
   template {
+    min_replicas = 1
+    max_replicas = 2
     container {
       name   = "ui"
       image  = "ynozar/todo-ui:latest"
@@ -67,6 +69,8 @@ resource "azurerm_container_app" "database" {
 
 
   template {
+    min_replicas = 1
+    max_replicas = 1
     container {
       name   = "db"
       image  = "postgres:latest"
@@ -118,15 +122,17 @@ ingress {
 
 
   template {
+    min_replicas = 1
+    max_replicas = 2
     container {
       name   = "backend"
       image  = "ynozar/todo-api:latest"
-      cpu    = 0.25
-      memory = "0.5Gi"
+      cpu    = 0.5
+      memory = "1Gi"
 
       env {
           name = "DB_CONNECTION"
-          value = var.DB_CONNECTION
+          value = var.DB_PROD_CONNECTION
         }
 
       env {
@@ -141,21 +147,3 @@ ingress {
     }
   }
 }
-
-/*
-resource "azurerm_container_app_environment_custom_domain" "frontendCert" {
-  container_app_environment_id = azurerm_container_app_environment.todoEnv.id
-  certificate_blob_base64      = sensitive(filebase64("certificate.pfx"))
-  certificate_password         = var.CERT_PASSWORD
-  dns_suffix                   = "todo.yoel.app"
-}*/
-
-/*
-resource "azurerm_container_app_environment_custom_domain" "backendCert" {
-  container_app_environment_id = azurerm_container_app_environment.todoEnv.id
-  certificate_blob_base64      = filebase64("MAKE.pfx")
-  certificate_password         = ""
-  dns_suffix                   = "api.todo.yoel.app"
-}
-
-*/

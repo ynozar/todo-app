@@ -26,6 +26,16 @@ sensitive = true
 }
 
 
+variable "DB_PROD_CONNECTION" {
+
+description = "DB Connection string"
+
+type = string
+
+sensitive = true
+
+}
+
 variable "POSTGRES_USER" {
 
 description = "The password for the database"
