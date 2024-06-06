@@ -40,7 +40,7 @@ ingress {
     max_replicas = 2
     container {
       name   = "ui"
-      image  = "ynozar/todo-ui" #removed :latest
+      image  = "ynozar/todo-ui:latest" #removed :latest
       cpu    = 0.25
       memory = "0.5Gi"
     }
@@ -126,7 +126,7 @@ ingress {
     max_replicas = 2
     container {
       name   = "backend"
-      image  = "ynozar/todo-api" #removed :latest
+      image  = "ynozar/todo-api:latest" #removed :latest
       cpu    = 0.5
       memory = "1Gi"
 
