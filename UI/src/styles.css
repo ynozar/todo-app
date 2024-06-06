@@ -5,6 +5,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  overscroll-behavior: none;
+}
+
 .yoel-container{
   display: flex;
   justify-content: center; /* Horizontally center the content */
