@@ -55,6 +55,7 @@ jobs:
           tags: ${{ steps.meta2.outputs.tags }}
           labels: ${{ steps.meta2.outputs.labels }}
   push_to_azure:
+    needs: push_to_registry
     name: deploy to azure
     runs-on: ubuntu-latest
     permissions:
