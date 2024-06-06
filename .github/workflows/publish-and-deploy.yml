@@ -1,0 +1,89 @@
+name: publish adn deploy
+
+on: workflow_dispatch
+
+jobs:
+  push_to_registry:
+    name: Push Docker image to Docker Hub
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+      attestations: write
+      id-token: write
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      
+      - name: Extract metadata (tags, labels) for UI
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ynozar/todo-ui
+          tags: 
+            latest
+      - name: Build and push UI Docker image
+        id: push
+        uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
+        with:
+          context: ./UI
+          file: ./UI/Dockerfile.prod
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Extract metadata (tags, labels) for Backend
+        id: meta2
+        uses: docker/metadata-action@v5
+        with:
+          images: ynozar/todo-api
+          tags: 
+            latest
+      - name: Build and push Backend Docker image
+        id: push-2
+        uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
+        with:
+          context: ./ToDoBackend/ToDoBackend
+          file: ./ToDoBackend/ToDoBackend/Dockerfile
+          push: true
+          tags: ${{ steps.meta2.outputs.tags }}
+          labels: ${{ steps.meta2.outputs.labels }}
+  push_to_azure:
+    name: deploy to azure
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+      attestations: write
+      id-token: write
+    steps:
+      - name: Log in to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+    
+      - name: Build and deploy UI Container App
+        uses: azure/container-apps-deploy-action@v2
+        with:
+          registryUrl: docker.io
+          registryUsername: ${{ secrets.DOCKER_USERNAME }}
+          registryPassword: ${{ secrets.DOCKER_PASSWORD }}
+          containerAppName: ui
+          resourceGroup: todo-app
+          imageToDeploy: ynozar/todo-ui
+
+      - name: Build and deploy Backend Container App
+        uses: azure/container-apps-deploy-action@v2
+        with:
+          registryUrl: docker.io
+          registryUsername: ${{ secrets.DOCKER_USERNAME }}
+          registryPassword: ${{ secrets.DOCKER_PASSWORD }}
+          containerAppName: backend
+          resourceGroup: todo-app
+          imageToDeploy: ynozar/todo-backend
