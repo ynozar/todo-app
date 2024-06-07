@@ -33,7 +33,7 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: ynozar/todo-ui
-          tags: |
+          tags: 
             ${{ steps.vars.outputs.sha_short }}
       - name: Build and push UI Docker image
         id: push
@@ -50,7 +50,7 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: ynozar/todo-api
-          tags: |
+          tags: 
             ${{ steps.vars.outputs.sha_short }}
       - name: Build and push Backend Docker image
         id: push-2
