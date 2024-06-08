@@ -35,7 +35,7 @@ jobs:
           context: ./UI
           file: ./UI/Dockerfile.prod
           push: true
-          tags: ${{ steps.vars.outputs.sha_short }}
+          tags: ynozar/todo-ui:${{ steps.get_sha.outputs.sha_short }}
 
       - name: Extract metadata (tags, labels) for Backend
         id: meta2
@@ -43,7 +43,7 @@ jobs:
         with:
           images: ynozar/todo-api
           tags: 
-            ${{ steps.vars.outputs.sha_short }}
+            ${{ steps.get_sha.outputs.sha_short }}
       - name: Build and push Backend Docker image
         id: push-2
         uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
