@@ -1,6 +1,12 @@
 name: Deploy to Azure
 
-on: workflow_dispatch
+on: 
+  workflow_dispatch:
+    inputs:
+      commit:
+        description: 'Commit SHA'
+        required: true
+        default: 'latest'
 
 jobs:
   push_to_azure:
@@ -25,7 +31,7 @@ jobs:
           registryPassword: ${{ secrets.DOCKER_PASSWORD }}
           containerAppName: ui
           resourceGroup: todo-app
-          imageToDeploy: ynozar/todo-ui
+          imageToDeploy: ynozar/todo-ui:${{ steps.vars.outputs.sha_short }}
 
       - name: Build and deploy Backend Container App
         uses: azure/container-apps-deploy-action@v2
@@ -35,4 +41,4 @@ jobs:
           registryPassword: ${{ secrets.DOCKER_PASSWORD }}
           containerAppName: backend
           resourceGroup: todo-app
-          imageToDeploy: ynozar/todo-backend
+          imageToDeploy: ynozar/todo-backend:${{ github.event.inputs.commit }}

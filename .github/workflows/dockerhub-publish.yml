@@ -3,7 +3,7 @@ name: Publish Docker image
 on: workflow_dispatch
 
 jobs:
-  push_to_registry:
+  publish_to_dockerhub:
     name: Push Docker Images to Docker Hub
     runs-on: ubuntu-latest
     permissions:

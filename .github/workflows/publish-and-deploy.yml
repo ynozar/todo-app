@@ -2,14 +2,9 @@ name: Publish and Deploy
 
 on: 
   workflow_dispatch:
-    inputs:
-      commit:
-        description: 'Commit SHA'
-        required: false
-        default: 'latest'
 jobs:
-  push_to_registry:
-    name: Push Docker image to Docker Hub
+  publish_to_dockerhub:
+    name: Push Docker Images to Docker Hub
     runs-on: ubuntu-latest
     permissions:
       packages: write
@@ -20,49 +15,33 @@ jobs:
       - name: Check out the repo
         uses: actions/checkout@v4
 
-      - name: Get inputs
+      - name: Get commit SHA
         id: get_sha
-        run: echo ${{ github.event.inputs.commit }}
+        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
 
       - name: Log in to Docker Hub
-        uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
+        uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-      
-      - name: Extract metadata (tags, labels) for UI
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ynozar/todo-ui
-          tags: 
-            ${{ steps.vars.outputs.sha_short }}
+
       - name: Build and push UI Docker image
         id: push
-        uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
+        uses: docker/build-push-action@v5
         with:
           context: ./UI
           file: ./UI/Dockerfile.prod
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: ynozar/todo-ui:${{ steps.get_sha.outputs.sha_short }}, ynozar/todo-ui:latest
 
-      - name: Extract metadata (tags, labels) for Backend
-        id: meta2
-        uses: docker/metadata-action@v5
-        with:
-          images: ynozar/todo-api
-          tags: 
-            ${{ steps.vars.outputs.sha_short }}
       - name: Build and push Backend Docker image
         id: push-2
-        uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
+        uses: docker/build-push-action@v5
         with:
           context: ./ToDoBackend/ToDoBackend
           file: ./ToDoBackend/ToDoBackend/Dockerfile
           push: true
-          tags: ${{ steps.meta2.outputs.tags }}
-          labels: ${{ steps.meta2.outputs.labels }}
+          tags: ynozar/todo-api:${{ steps.get_sha.outputs.sha_short }}, ynozar/todo-api:latest
   push_to_azure:
     needs: push_to_registry
     name: deploy to azure
