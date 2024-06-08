@@ -1,6 +1,5 @@
 name: Publish and Deploy
-
-on: workflow_dispatch
+inputs:
   num-octocats:
     description: 'Number of Octocats'
     required: false
@@ -8,6 +7,7 @@ on: workflow_dispatch
   octocat-eye-color:
     description: 'Eye color of the Octocats'
     required: true
+on: workflow_dispatch
 jobs:
   push_to_registry:
     name: Push Docker image to Docker Hub
