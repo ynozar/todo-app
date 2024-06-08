@@ -3,14 +3,14 @@ name: Publish and Deploy
 on: 
   workflow_dispatch
     inputs:
-    num-octocats:
-      description: 'commit SHA'
-      required: false
-      default: 'latest'
-    octocat-eye-color:
-      description: 'Eye color of the Octocats'
-      required: true
-      type: environment
+      commit-sha:
+        description: 'commit SHA'
+        required: false
+        default: 'latest'
+      test-bool:
+        description: 'bool'
+        required: true
+        type: environment
     
 jobs:
   push_to_registry:
