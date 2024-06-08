@@ -32,9 +32,7 @@ jobs:
           context: ./UI
           file: ./UI/Dockerfile.prod
           push: true
-          tags: |
-          ynozar/todo-ui:${{ steps.get_sha.outputs.sha_short }}
-          ynozar/todo-ui:latest
+          tags: ynozar/todo-ui:${{ steps.get_sha.outputs.sha_short }}, ynozar/todo-ui:latest
 
       - name: Build and push Backend Docker image
         id: push-2
@@ -43,6 +41,4 @@ jobs:
           context: ./ToDoBackend/ToDoBackend
           file: ./ToDoBackend/ToDoBackend/Dockerfile
           push: true
-          tags: |
-          ynozar/todo-api:${{ steps.get_sha.outputs.sha_short }}
-          ynozar/todo-api:latest
+          tags: ynozar/todo-api:${{ steps.get_sha.outputs.sha_short }}, ynozar/todo-api:latest
