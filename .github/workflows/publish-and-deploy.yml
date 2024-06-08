@@ -7,7 +7,7 @@ jobs:
     name: Push Docker Images to Docker Hub
     runs-on: ubuntu-latest
     outputs:
-      commit-sha: ${{ steps.get_sha.outputs.sha_short }}
+      commit: ${{ steps.get_sha.outputs.sha_short }}
     permissions:
       packages: write
       contents: read
@@ -49,7 +49,7 @@ jobs:
     name: deploy to azure
     runs-on: ubuntu-latest
     env:
-      COMMIT_SHA: ${{ needs.publish_to_dockerhub.outputs.commit-sha }}
+      COMMIT_SHA: ${{ needs.publish_to_dockerhub.outputs.commit }}
     permissions:
       packages: write
       contents: read
@@ -69,7 +69,7 @@ jobs:
           registryPassword: ${{ secrets.DOCKER_PASSWORD }}
           containerAppName: ui
           resourceGroup: todo-app
-          imageToDeploy: ynozar/todo-ui:$COMMIT_SHA
+          imageToDeploy: ynozar/todo-ui:${{ needs.publish_to_dockerhub.outputs.commit }}
 
       - name: Build and deploy Backend Container App
         uses: azure/container-apps-deploy-action@v2
@@ -79,4 +79,4 @@ jobs:
           registryPassword: ${{ secrets.DOCKER_PASSWORD }}
           containerAppName: backend
           resourceGroup: todo-app
-          imageToDeploy: ynozar/todo-backend:$COMMIT_SHA
+          imageToDeploy: ynozar/todo-backend:${{ needs.publish_to_dockerhub.outputs.commit }}
