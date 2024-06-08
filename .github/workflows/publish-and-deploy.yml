@@ -7,11 +7,6 @@ on:
         description: 'Commit SHA'
         required: false
         default: 'latest'
-      test-bool:
-        description: 'bool'
-        required: true
-        type: environment
-    
 jobs:
   push_to_registry:
     name: Push Docker image to Docker Hub
@@ -25,9 +20,9 @@ jobs:
       - name: Check out the repo
         uses: actions/checkout@v4
 
-      - name: Get commit SHA
+      - name: Get inputs
         id: get_sha
-        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+        run: echo ${{INPUT_COMMIT}}
 
       - name: Log in to Docker Hub
         uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
