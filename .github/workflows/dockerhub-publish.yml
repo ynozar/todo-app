@@ -14,7 +14,7 @@ jobs:
     steps:
       - name: Check out the repo
         uses: actions/checkout@v4
-        
+
       - name: Get commit SHA
         id: get_sha
         run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
@@ -32,7 +32,9 @@ jobs:
           context: ./UI
           file: ./UI/Dockerfile.prod
           push: true
-          tags: ynozar/todo-ui:${{ steps.get_sha.outputs.sha_short }}
+          tags: |
+          ynozar/todo-ui:${{ steps.get_sha.outputs.sha_short }}
+          ynozar/todo-ui:latest
 
       - name: Build and push Backend Docker image
         id: push-2
@@ -41,4 +43,6 @@ jobs:
           context: ./ToDoBackend/ToDoBackend
           file: ./ToDoBackend/ToDoBackend/Dockerfile
           push: true
-          tags: ynozar/todo-api:${{ steps.get_sha.outputs.sha_short }}
+          tags: |
+          ynozar/todo-api:${{ steps.get_sha.outputs.sha_short }}
+          ynozar/todo-api:latest
