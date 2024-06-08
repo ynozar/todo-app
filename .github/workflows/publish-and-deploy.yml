@@ -1,16 +1,12 @@
 name: Publish and Deploy
 
 on: 
-  workflow_dispatch
+  workflow_dispatch:
     inputs:
-      commit-sha:
-        description: 'commit SHA'
+      commit:
+        description: 'Commit SHA'
         required: false
         default: 'latest'
-      test-bool:
-        description: 'bool'
-        required: true
-        type: environment
     
 jobs:
   push_to_registry:
