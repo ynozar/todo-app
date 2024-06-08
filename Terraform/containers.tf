@@ -40,7 +40,7 @@ ingress {
     max_replicas = 2
     container {
       name   = "ui"
-      image  = "ynozar/todo-ui:latest" #removed :latest
+      image  = "ynozar/todo-ui:latest"
       cpu    = 0.25
       memory = "0.5Gi"
     }
@@ -69,7 +69,7 @@ resource "azurerm_container_app" "database" {
 
 
   template {
-    min_replicas = 1
+    min_replicas = 0
     max_replicas = 1
     container {
       name   = "db"
@@ -126,7 +126,7 @@ ingress {
     max_replicas = 2
     container {
       name   = "backend"
-      image  = "ynozar/todo-api:latest" #removed :latest
+      image  = "ynozar/todo-api:latest"
       cpu    = 0.5
       memory = "1Gi"
 
