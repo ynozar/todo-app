@@ -1,11 +1,11 @@
 {
   "name": "ToDo",
   "short_name": "ToDo",
-  "theme_color": "#F8FDEF",
+  "theme_color": "#059669",
   "background_color": "#059669",
   "display": "standalone",
   "scope": "./",
-  "start_url": "./",
+  "start_url": "./home",
   "icons": [
                {
                  "src": "assets/windows11/SmallTile.scale-100.png",
