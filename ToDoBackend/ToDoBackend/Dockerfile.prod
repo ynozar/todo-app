@@ -1,0 +1,23 @@
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build-env
+WORKDIR /App
+
+# Copy everything
+COPY . ./
+# Restore as distinct layers
+RUN dotnet restore
+RUN apt update && apt install -y clang libglib2.0-dev libssl-dev
+
+# Build and publish a release
+#RUN dotnet publish -c Release -o out
+# Publish for AOT with Linux target
+RUN dotnet publish -c Release --self-contained false -r linux-x64 -o out /p:AOT=true /p:UseAppHost=false
+
+
+# Build runtime image
+FROM ubuntu:18.04 AS base
+
+WORKDIR /App
+COPY --from=build-env /App/out .
+# COPY dotnet.pfx /App # Uncomment this line if you want to use a certificate file instead of a base64 string
+ENTRYPOINT ["dotnet", "ToDoBackend.dll"]
+
