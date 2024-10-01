@@ -1,4 +1,5 @@
 ﻿
+using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Cryptography.Xml;
 using System.Text;
@@ -74,13 +75,10 @@ builder.Services.AddAuthentication(options =>
         // options.VerifySignature = false;
     });
 
-var certPassword = builder.Configuration.GetValue<string>("cert_password");
+RSA rsa = RSA.Create(2048);
 
-var cert = builder.Configuration.GetValue<string>("certificate") ?? string.Empty;
-var certificate = new X509Certificate2(Convert.FromBase64String(cert), certPassword);
 
-Console.WriteLine(certificate.HasPrivateKey); // Should be true
-builder.Services.AddSingleton<IAlgorithmFactory>(new DelegateAlgorithmFactory(new RS256Algorithm(certificate)));
+builder.Services.AddSingleton<IAlgorithmFactory>(new DelegateAlgorithmFactory(new RS256Algorithm(rsa)));
 
 builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
