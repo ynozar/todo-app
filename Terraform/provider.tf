@@ -11,6 +11,11 @@ terraform {
       version = "2.32.0"
     }
   }
+
+  backend "gcs" {
+    bucket = "ynozar-todo-app"      # Replace with your GCS bucket name
+    prefix = "terraform/state"        # Path within the bucket for the state file
+  }
 }
 
 

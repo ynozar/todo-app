@@ -50,5 +50,4 @@ variable "region" {
 
 variable "COMMIT_HASH" {
   type = string
-  default = "latest"
 }
