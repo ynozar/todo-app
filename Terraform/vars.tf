@@ -25,7 +25,7 @@ sensitive = true
 variable "DB_CONNECTION" {
 
 description = "DB Connection string"
-
+  default = ""
 type = string
 
 sensitive = true
@@ -36,7 +36,7 @@ sensitive = true
 variable "DB_PROD_CONNECTION" {
 
 description = "DB Connection string"
-
+  default = ""
 type = string
 
 sensitive = true
@@ -51,33 +51,4 @@ variable "region" {
 variable "COMMIT_HASH" {
   type = string
   default = "latest"
-}
-
-variable "POSTGRES_USER" {
-
-description = "The username for the database"
-
-type = string
-
-sensitive = false
-
-}
-
-
-variable "POSTGRES_PASSWORD" {
-
-description = "The password for the database"
-
-type = string
-sensitive = true
-
-}
-
-
-variable "POSTGRES_DB" {
-
-description = "The name for the database"
-
-type = string
-
 }
