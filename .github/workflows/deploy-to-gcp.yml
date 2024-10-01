@@ -5,8 +5,15 @@ on:
     inputs:
       commit_hash:
         description: 'Commit Short Hash'
-        required: false
+        required: true
         default: 'latest'
+      action:
+        description: 'Choose the action to perform'
+        required: true
+        default: 'plan'
+        options:
+          - plan
+          - apply
 
 jobs:
   terraform:
@@ -39,7 +46,7 @@ jobs:
       - name: Terraform Apply
         run: |
           cd Terraform # Change to your Terraform directory
-          terraform apply -auto-approve
+          terraform ${{ github.event.inputs.action }} -auto-approve
         env:
           TF_VAR_COMMIT_HASH: ${{ github.event.inputs.commit_hash }}
           TF_VAR_DB_PROD_CONNECTION: ${{ secrets.DB_PROD_CONNECTION }}
