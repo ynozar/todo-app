@@ -39,14 +39,14 @@ jobs:
 
       - name: Initialize Terraform
         run: |
-          cd terraform_directory # Change to your Terraform directory
+          cd Terraform # Change to your Terraform directory
           terraform init
 
       - name: Terraform Apply
         run: |
-          cd terraform_directory # Change to your Terraform directory
-          terraform plan # apply -auto-approve
+          cd Terraform # Change to your Terraform directory
+          terraform apply -auto-approve
         env:
           TF_VAR_COMMIT_HASH: ${{ steps.get_sha.outputs.sha_short }}
-          TF_VAR_DB_PROD_CONNECTION: ${{ secrets.DB_PROD_CONNECTION }}              
+          TF_VAR_DB_PROD_CONNECTION: ${{ secrets.DB_PROD_CONNECTION }}
           PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
