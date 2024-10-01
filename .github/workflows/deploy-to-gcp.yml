@@ -1,0 +1,52 @@
+name: Terraform Apply
+
+on:
+  workflow_dispatch:
+    inputs:
+      commit_hash:
+        description: 'Optional commit short hash'
+        required: false
+        default: ''
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.inputs.commit_hash || 'main' }}
+
+      - name: Get commit SHA
+        id: get_sha
+        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+
+
+      - name: Set up Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          export_default_credentials: true
+
+      - name: Install Terraform
+        run: |
+          curl -LO https://releases.hashicorp.com/terraform/$(curl -s https://checkpoint-api.hashicorp.com/v1/check/terraform | jq -r .current_version)/terraform_$(curl -s https://checkpoint-api.hashicorp.com/v1/check/terraform | jq -r .current_version)_linux_amd64.zip
+          unzip terraform_*_linux_amd64.zip
+          sudo mv terraform /usr/local/bin/
+          terraform -version
+
+      - name: Initialize Terraform
+        run: |
+          cd terraform_directory # Change to your Terraform directory
+          terraform init
+
+      - name: Terraform Apply
+        run: |
+          cd terraform_directory # Change to your Terraform directory
+          terraform plan # apply -auto-approve
+        env:
+          TF_VAR_COMMIT_HASH: ${{ steps.get_sha.outputs.sha_short }}
+          TF_VAR_DB_PROD_CONNECTION: ${{ secrets.DB_PROD_CONNECTION }}              
+          PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
