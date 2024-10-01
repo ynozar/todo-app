@@ -1,4 +1,4 @@
-name: Terraform Apply (Deploy to GCP)
+name: Deploy to GCP
 
 on:
   workflow_dispatch:
@@ -47,7 +47,13 @@ jobs:
       - name: Terraform Apply
         run: |
           cd Terraform # Change to your Terraform directory
-          terraform ${{ github.event.inputs.action }} -auto-approve
+          action=${{ github.event.inputs.action }}
+          if [[ "$action" == "apply" ]]; then
+            terraform apply -auto-approve
+          else
+            terraform plan
+          fi
+
         env:
           TF_VAR_COMMIT_HASH: ${{ github.event.inputs.commit_hash }}
           TF_VAR_DB_PROD_CONNECTION: ${{ secrets.DB_PROD_CONNECTION }}
