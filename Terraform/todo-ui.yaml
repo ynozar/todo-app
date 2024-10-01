@@ -1,0 +1,32 @@
+# custom-nginx-manifest.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: todo-ui-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: todo-ui
+  template:
+    metadata:
+      labels:
+        app: todo-ui
+    spec:
+      containers:
+      - name: todo-ui
+        image: ynozar/todo-ui:latest  # Replace with your image
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: todo-ui-service
+spec:
+  type: LoadBalancer  # Use LoadBalancer for external access
+  ports:
+  - port: 80
+    targetPort: 80
+  selector:
+    app: todo-ui

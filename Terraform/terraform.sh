@@ -28,12 +28,6 @@ echo "Loaded variables from .env for Terraform:"
 #env | grep ^TF_VAR_
 
 
-if [[ "$1" == "apply" ]]; then
-  # Code to run if the first argument is "apply"
-  terraform apply
-else
-  # Code to run if the first argument is not "apply"
-  terraform plan
-fi
+terraform "$@"
 
 # ... other Terraform commands
