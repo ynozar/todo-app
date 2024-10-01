@@ -8,6 +8,7 @@ on:
         required: true
         default: 'latest'
       action:
+        type: choice
         description: 'Choose the action to perform'
         required: true
         default: 'plan'
