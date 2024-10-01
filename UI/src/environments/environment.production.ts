@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: "https://api.todo.yoel.app",
+  apiUrl: "34.136.141.195",
 };
