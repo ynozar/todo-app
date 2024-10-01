@@ -36,7 +36,7 @@ import {DatetimeSelectorComponent} from "./datetime-selector/datetime-selector.c
 
 export function apiConfigFactory(): Configuration {
   const params: ConfigurationParameters = {
-    basePath: environment.apiUrl,
+    basePath: "34.171.16.119",
   };
   return new Configuration(params);
 }
