@@ -1,0 +1,60 @@
+name: Deploy to GCP
+
+on:
+  workflow_dispatch:
+    inputs:
+      commit_hash:
+        description: 'Commit Short Hash'
+        required: true
+        default: 'latest'
+      action:
+        type: choice
+        description: 'Choose the action to perform'
+        required: true
+        default: 'plan'
+        options:
+          - plan
+          - apply
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        #with:
+        #  ref: ${{ github.event.inputs.commit_hash || 'main' }}
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+
+      - name: Install Terraform
+        run: |
+          curl -LO https://releases.hashicorp.com/terraform/$(curl -s https://checkpoint-api.hashicorp.com/v1/check/terraform | jq -r .current_version)/terraform_$(curl -s https://checkpoint-api.hashicorp.com/v1/check/terraform | jq -r .current_version)_linux_amd64.zip
+          unzip terraform_*_linux_amd64.zip
+          sudo mv terraform /usr/local/bin/
+          terraform -version
+
+      - name: Initialize Terraform
+        run: |
+          cd Terraform # Change to your Terraform directory
+          terraform init
+
+      - name: Terraform Apply
+        run: |
+          cd Terraform # Change to your Terraform directory
+          action=${{ github.event.inputs.action }}
+          if [[ "$action" == "apply" ]]; then
+            terraform apply -auto-approve
+          else
+            terraform plan
+          fi
+
+        env:
+          TF_VAR_COMMIT_HASH: ${{ github.event.inputs.commit_hash }}
+          TF_VAR_DB_PROD_CONNECTION: ${{ secrets.DB_PROD_CONNECTION }}
+          TF_VAR_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}

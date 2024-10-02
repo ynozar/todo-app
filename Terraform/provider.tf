@@ -2,22 +2,35 @@
 # Azure Provider source and version being used
 terraform {
   required_providers {
-    azurerm = {
-      source  = "hashicorp/azurerm"
-      version = "~>3.100"
+    google = {
+      source = "hashicorp/google"
+      version = "6.5.0"
     }
+    kubernetes = {
+      source = "hashicorp/kubernetes"
+      version = "2.32.0"
+    }
+  }
+
+  backend "gcs" {
+    bucket = "ynozar-todo-app"      # Replace with your GCS bucket name
+    prefix = "terraform/state"        # Path within the bucket for the state file
   }
 }
 
-# Configure the Microsoft Azure Provider
-provider "azurerm" {
-  skip_provider_registration = true # This is only required when the User, Service Principal, or Identity running Terraform lacks the permissions to register Azure Resource Providers.
-  features {}
+
+provider "google" {
+  project = var.PROJECT_ID
+  region  = "us-central1"  # You can choose a different region
 }
 
+/*
+data "google_client_config" "provider" {}
 
-# Create a resource group
-resource "azurerm_resource_group" "todoRG" {
-  name     = "todo-app"
-  location = "eastus"
+provider "kubernetes" {
+  host  = "https://${google_container_cluster.primary.endpoint}"
+  token = data.google_client_config.provider.access_token
+  cluster_ca_certificate = base64decode(google_container_cluster.primary.master_auth[0].cluster_ca_certificate)
 }
+
+*/
