@@ -1,9 +1,11 @@
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
-using JWT;
-using JWT.Algorithms;
-using JWT.Serializers;
+
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 
 namespace ToDoBackend.Domain.Helpers;
 
@@ -11,11 +13,16 @@ public class AuthHelper: IAuthHelper
 {
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IOptions<ToDoServiceOptions> _options;
+    private RSA _rsa;
     
     public AuthHelper(IHttpContextAccessor httpContextAccessor, IOptions<ToDoServiceOptions> options)
     {
         _httpContextAccessor = httpContextAccessor;
         _options = options;
+        _rsa = RSA.Create();
+        var privateKeyBytes = Convert.FromBase64String(_options.Value.RSA_PRIVATE);
+
+        _rsa.ImportRSAPrivateKey(privateKeyBytes, out _);
     }
     public Dictionary<string,string> GetUserFromHeader()
     {
@@ -26,26 +33,24 @@ public class AuthHelper: IAuthHelper
     
     public string IssueToken(string username, string name,Guid uid)
     {
-        var payload = new Dictionary<string, object>
-        {
-            { "exp", new DateTimeOffset(DateTime.UtcNow.AddHours(1)).ToUnixTimeSeconds() },
-            { "username", username },
-            { "full_name", name },
-            { "sub", uid },
-            { "aud", "claim2-value" }
-        };
+
         
-        var certificate = new X509Certificate2(Convert.FromBase64String(_options.Value.Certificate), _options.Value.Cert_Password);
+        
+        var creds = new SigningCredentials(new RsaSecurityKey(_rsa), SecurityAlgorithms.RsaSha256);
 
-        IJwtAlgorithm algorithm = new RS256Algorithm(certificate);
-        IJsonSerializer serializer = new JsonNetSerializer();
-        IBase64UrlEncoder urlEncoder = new JwtBase64UrlEncoder();
-        IJwtEncoder encoder = new JwtEncoder(algorithm, serializer, urlEncoder);
-        const string key = null; // not needed if algorithm is asymmetric
+        var token = new JwtSecurityToken(
+            issuer: "ssss",
+            audience: "todoapp",
+            claims: new List<Claim>()
+            {
+                new ("username",username),
+                new ("full_name",name),
+                new ("sub",uid.ToString())
+            },
+            expires: DateTime.Now.AddMinutes(60),
+            signingCredentials: creds);
 
-        var token = encoder.Encode(payload, key);
-        //Console.WriteLine(token);
-        return token;
+        return new JwtSecurityTokenHandler().WriteToken(token);
     }
     
 }

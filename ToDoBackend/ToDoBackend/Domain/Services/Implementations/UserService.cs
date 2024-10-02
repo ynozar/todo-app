@@ -1,9 +1,7 @@
 using System.Collections.Specialized;
 using System.Security.Cryptography.X509Certificates;
 using BCrypt.Net;
-using JWT;
-using JWT.Algorithms;
-using JWT.Serializers;
+
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using ToDoBackend.DataContext;

@@ -1,17 +1,15 @@
 ﻿
 using System.Security.Cryptography;
-using System.Security.Cryptography.X509Certificates;
-using System.Security.Cryptography.Xml;
 using System.Text;
 using FluentValidation;
-using JWT.Algorithms;
-using JWT.Extensions.AspNetCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.OpenApi;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
 using ToDoBackend;
@@ -61,25 +59,31 @@ builder.Services
 
 //Authentication
 
+
+var rsa = RSA.Create();
+var privateKeyBase64 = builder.Configuration.GetValue<string>("RSA_PRIVATE")??"";
+var publicKeyBytes = Convert.FromBase64String(privateKeyBase64);
+rsa.ImportRSAPrivateKey(publicKeyBytes,out _);
+var rsaSecurityKey = new RsaSecurityKey(rsa);
+
 builder.Services.AddAuthentication(options =>
     {
-        options.DefaultAuthenticateScheme = JwtAuthenticationDefaults.AuthenticationScheme;
-        options.DefaultChallengeScheme = JwtAuthenticationDefaults.AuthenticationScheme;
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
     })
-    .AddJwt(options =>
+    .AddJwtBearer(options =>
     {
-        // secrets, required only for symmetric algorithms, such as HMACSHA256Algorithm
-        // options.Keys = new[] { "mySecret" };
-                     
-        // optionally; disable throwing an exception if JWT signature is invalid
-        // options.VerifySignature = false;
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = false,
+            ValidateAudience = false,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = "iss",
+            ValidAudience = "aud",
+            IssuerSigningKey = rsaSecurityKey
+        };
     });
-
-
-var privateKey = builder.Configuration.GetValue<string>("DB_CONNECTION") ?? "";
-var rsa = RSA.Create();
-rsa.ImportFromPem(privateKey.ToCharArray());
-builder.Services.AddSingleton<IAlgorithmFactory>(new DelegateAlgorithmFactory(new RS256Algorithm(rsa)));
 
 builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
