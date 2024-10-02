@@ -13,9 +13,9 @@ description = "The GCP project_id"
 type = string
 }
 
-variable "CERTIFICATE" {
+variable "RSA_PRIVATE" {
 
-description = "Certificate for JWT signing"
+description = "RSA key for JWT signing"
 
 type = string
   default = ""

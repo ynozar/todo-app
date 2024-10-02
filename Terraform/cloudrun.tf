@@ -15,6 +15,10 @@ resource "google_cloud_run_service" "todo_api" {
           name = "DB_CONNECTION"
           value = var.DB_PROD_CONNECTION
         }
+        env {
+          name = "RSA_PRIVATE"
+          value = var.RSA_PRIVATE
+        }
       }
     }
   }

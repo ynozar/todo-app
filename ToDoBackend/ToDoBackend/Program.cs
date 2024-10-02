@@ -75,9 +75,10 @@ builder.Services.AddAuthentication(options =>
         // options.VerifySignature = false;
     });
 
-RSA rsa = RSA.Create(2048);
 
-
+var privateKey = builder.Configuration.GetValue<string>("DB_CONNECTION") ?? "";
+var rsa = RSA.Create();
+rsa.ImportFromPem(privateKey.ToCharArray());
 builder.Services.AddSingleton<IAlgorithmFactory>(new DelegateAlgorithmFactory(new RS256Algorithm(rsa)));
 
 builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
