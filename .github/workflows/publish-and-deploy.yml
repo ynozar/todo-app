@@ -12,14 +12,14 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Run First Action
-        uses: .github/workflows/dockerhub-publish.yml  #
+        uses: ./.github/workflows/dockerhub-publish.yml  #
 
       - name: Get commit SHA
         id: get_sha
         run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
 
       - name: Run Second Action
-        uses: .github/workflows/deploy-to-gcp.yml  #
+        uses: ./.github/workflows/deploy-to-gcp.yml  #
         with:
           commit_hash: ${{ steps.get_sha.outputs.sha_short }}
           action: 'apply'
