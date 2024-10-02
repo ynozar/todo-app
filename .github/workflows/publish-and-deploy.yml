@@ -1,4 +1,4 @@
-name: Run Sequential Actions
+name: Publish and Deploy
 
 on:
   workflow_dispatch:
