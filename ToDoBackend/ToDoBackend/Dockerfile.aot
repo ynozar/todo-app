@@ -10,9 +10,10 @@ RUN dotnet restore
 # Copy the rest of the application
 COPY . ./
 
-RUN apt-get update && apt-get install -y \
-    clang \
-    && rm -rf /var/lib/apt/lists/*
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+       clang zlib1g-dev
+
 
 
 # Publish the application with AOT compilation
