@@ -61,10 +61,10 @@ resource "google_cloud_run_service_iam_member" "todo_ui_invoker" {
 }
 
 output "api_url" {
-  value = google_cloud_run_service.todo_api.traffic[0].url
+  value = google_cloud_run_service.todo_api.status[0].url
 }
 
 
 output "ui_url" {
-  value = google_cloud_run_service.todo_ui.traffic[0].url
+  value = google_cloud_run_service.todo_ui.status[0].url
 }
