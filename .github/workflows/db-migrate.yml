@@ -21,9 +21,6 @@ jobs:
       with:
         dotnet-version: '8.0.x'
 
-    - name: ls
-      run: ls
-
     - name: Restore dependencies
       run: dotnet restore
       working-directory: ToDoBackend
@@ -34,9 +31,6 @@ jobs:
 
     - name: Install EF Core tools
       run: dotnet tool install --global dotnet-ef
-
-    - name: Update PATH for EF tools
-      run: echo "${{ github.env.PATH }}:/root/.dotnet/tools" >> $GITHUB_ENV
 
     - name: Run EF database update
       run: dotnet ef database update --project ToDoBackend.csproj --context ToDoBackend.DataContext.ApplicationDataContext
