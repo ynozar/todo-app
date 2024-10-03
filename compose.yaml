@@ -43,7 +43,6 @@ services:
       - .env
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-
 volumes:
   db_volume:
     external: false
