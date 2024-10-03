@@ -1,4 +1,4 @@
-name: .NET Build and EF Migration
+name: Migrate DB
 
 on:
   workflow_dispatch:
@@ -7,7 +7,7 @@ on:
       - main
 
 jobs:
-  build:
+  Migration:
     runs-on: ubuntu-latest
     env:
       MY_ENV_VAR: 'some_value'  # Job-level env variable
@@ -23,11 +23,11 @@ jobs:
 
     - name: Restore dependencies
       run: dotnet restore
-      working-directory: ./ToDoBackend/TodoBackend
+      working-directory: ToDoBackend/TodoBackend
 
     - name: Build and publish
       run: dotnet publish -c Release -o out
-      working-directory: ./ToDoBackend/TodoBackend
+      working-directory: ToDoBackend/TodoBackend
 
     - name: Install EF Core tools
       run: dotnet tool install --global dotnet-ef
@@ -40,4 +40,4 @@ jobs:
       env:
         RSA_PRIVATE: ${{ secrets.RSA_PRIVATE }}  # Step-level secret
         DB_CONNECTION: ${{ secrets.DB_CONNECTION }}  # Step-level secret
-      working-directory: ./ToDoBackend/TodoBackend
+      working-directory: ToDoBackend/TodoBackend
