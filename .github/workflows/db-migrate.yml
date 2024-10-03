@@ -2,9 +2,6 @@ name: Migrate DB
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
 
 jobs:
   Migration:
@@ -26,9 +23,7 @@ jobs:
     - name: Build and publish
       run: dotnet publish -c Release -o out 
       working-directory: ToDoBackend
-    - name: ls
-      run: ls
-      working-directory: ToDoBackend
+ 
     - name: Install EF Core tools
       run: dotnet tool install --global dotnet-ef
 
