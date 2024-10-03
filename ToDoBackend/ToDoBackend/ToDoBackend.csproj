@@ -32,6 +32,10 @@
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.5.0" />
   </ItemGroup>
   <ItemGroup>
+    <TrimmerRootAssembly Include="FluentValidation" />
+    <TrimmerRootAssembly Include="FluentValidation.AspNetCore" />
+  </ItemGroup>
+  <ItemGroup>
     <Folder Include="Migrations\" />
     <Folder Include="Tests\" />
   </ItemGroup>
