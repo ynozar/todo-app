@@ -1,0 +1,43 @@
+name: .NET Build and EF Migration
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      MY_ENV_VAR: 'some_value'  # Job-level env variable
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up .NET
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Restore dependencies
+      run: dotnet restore
+      working-directory: ./ToDoBackend/TodoBackend
+
+    - name: Build and publish
+      run: dotnet publish -c Release -o out
+      working-directory: ./ToDoBackend/TodoBackend
+
+    - name: Install EF Core tools
+      run: dotnet tool install --global dotnet-ef
+
+    - name: Update PATH for EF tools
+      run: echo "${{ github.env.PATH }}:/root/.dotnet/tools" >> $GITHUB_ENV
+
+    - name: Run EF database update
+      run: dotnet ef database update --project ToDoBackend.csproj --context ToDoBackend.DataContext.ApplicationDataContext
+      env:
+        RSA_PRIVATE: ${{ secrets.RSA_PRIVATE }}  # Step-level secret
+        DB_CONNECTION: ${{ secrets.DB_CONNECTION }}  # Step-level secret
+      working-directory: ./ToDoBackend/TodoBackend

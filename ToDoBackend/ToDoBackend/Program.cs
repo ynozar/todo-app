@@ -150,13 +150,14 @@ app.MapGroup("")
     app.UseSwaggerUI();
 
 
-
-using (var scope = app.Services.CreateScope())
+    if (app.Environment.IsDevelopment())
+    {
+    using (var scope = app.Services.CreateScope())
 {
     var dbContext =  scope.ServiceProvider.GetRequiredService<ApplicationDataContext>();
     dbContext.Database.Migrate();
 }
-
+    }
 app.Run();
 
 
