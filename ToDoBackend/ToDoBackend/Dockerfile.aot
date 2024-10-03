@@ -10,6 +10,11 @@ RUN dotnet restore
 # Copy the rest of the application
 COPY . ./
 
+RUN apt-get update && apt-get install -y \
+    clang \
+    && rm -rf /var/lib/apt/lists/*
+
+
 # Publish the application with AOT compilation
 RUN dotnet publish -c Release -p:PublishAot=true -p:RuntimeIdentifier=linux-x64 -o /app
 
