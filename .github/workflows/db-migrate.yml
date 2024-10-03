@@ -9,9 +9,7 @@ on:
 jobs:
   Migration:
     runs-on: ubuntu-latest
-    env:
-      MY_ENV_VAR: 'some_value'  # Job-level env variable
-
+  
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
@@ -26,9 +24,11 @@ jobs:
       working-directory: ToDoBackend
 
     - name: Build and publish
-      run: dotnet publish -c Release -o out
+      run: dotnet publish -c Release -o out 
       working-directory: ToDoBackend
-
+    - name: ls
+      run: ls
+      working-directory: ToDoBackend
     - name: Install EF Core tools
       run: dotnet tool install --global dotnet-ef
 
@@ -36,5 +36,5 @@ jobs:
       run: dotnet ef database update --project ToDoBackend.csproj --context ToDoBackend.DataContext.ApplicationDataContext
       env:
         RSA_PRIVATE: ${{ secrets.RSA_PRIVATE }}  # Step-level secret
-        DB_CONNECTION: ${{ secrets.DB_CONNECTION }}  # Step-level secret
+        DB_CONNECTION: ${{ secrets.DB_PROD_CONNECTION }}  # Step-level secret
       working-directory: ToDoBackend
