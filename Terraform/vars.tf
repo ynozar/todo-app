@@ -45,7 +45,7 @@ sensitive = true
 
 variable "region" {
   type = string
-  default = "us-central1-a"
+  default = "us-central1"
 }
 
 variable "COMMIT_HASH" {
