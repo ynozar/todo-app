@@ -47,7 +47,7 @@ builder.Services.AddScoped<IGroupService, GroupService>();
 
 builder.Services.AddScoped<IUserService, UserService>();
 
-builder.Services.AddScoped<IAuthHelper, AuthHelper>();
+builder.Services.AddScoped<IAuthHelper, AuthHelper>(); //can prob be singleton
 
 //Model Validators
 builder.Services
@@ -59,11 +59,10 @@ builder.Services
 
 //Authentication
 
-
 var rsa = RSA.Create();
 var privateKeyBase64 = builder.Configuration.GetValue<string>("RSA_PRIVATE")??"";
-var publicKeyBytes = Convert.FromBase64String(privateKeyBase64);
-rsa.ImportRSAPrivateKey(publicKeyBytes,out _);
+var privateKeyBytes = Convert.FromBase64String(privateKeyBase64);
+rsa.ImportRSAPrivateKey(privateKeyBytes,out _);
 var rsaSecurityKey = new RsaSecurityKey(rsa);
 
 builder.Services.AddAuthentication(options =>
