@@ -33,7 +33,7 @@ jobs:
       run: dotnet tool install --global dotnet-ef
 
     - name: Run EF database update
-      run: dotnet ef database update --project ToDoBackend.csproj --context ToDoBackend.DataContext.ApplicationDataContext
+      run: dotnet ef database update --project ToDoBackend/ToDoBackend.csproj --context ToDoBackend.DataContext.ApplicationDataContext
       env:
         RSA_PRIVATE: ${{ secrets.RSA_PRIVATE }}  # Step-level secret
         DB_CONNECTION: ${{ secrets.DB_PROD_CONNECTION }}  # Step-level secret
