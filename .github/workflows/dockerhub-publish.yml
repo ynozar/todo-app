@@ -39,6 +39,6 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: ./ToDoBackend/ToDoBackend
-          file: ./ToDoBackend/ToDoBackend/Dockerfile
+          file: ./ToDoBackend/ToDoBackend/Dockerfile.aot
           push: true
           tags: ynozar/todo-api:${{ steps.get_sha.outputs.sha_short }}, ynozar/todo-api:latest
