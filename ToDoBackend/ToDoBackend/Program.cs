@@ -100,8 +100,6 @@ builder.Services.AddCors(setupAction => setupAction.AddPolicy("lenientPolicy", c
 
 
 //fix swagger auth setup
-if (builder.Environment.IsDevelopment())
-{
 
 
 builder.Services.AddSwaggerGen(options =>
@@ -131,7 +129,7 @@ builder.Services.AddSwaggerGen(options =>
         }
     });
 });
-}
+
 
 builder.Services.AddHealthChecks();
 

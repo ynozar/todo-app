@@ -23,6 +23,7 @@ ENV PATH="/root/.dotnet/tools:${PATH}"
 
 # Step 2: Apply migrations using the regular .NET SDK runtime
 # This step will ensure migrations are applied before AOT compilation.
+RUN dotnet ef dbcontext optimize
 #RUN dotnet ef database update --configuration Release
 
 # Step 3: Publish the application with NativeAOT
