@@ -1,20 +1,13 @@
 ﻿
 using System.Security.Cryptography;
-using System.Text;
 using System.Text.Json.Serialization;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.OpenApi;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using Swashbuckle.AspNetCore.Filters;
 using ToDoBackend;
-using ToDoBackend.API.Validators;
 using ToDoBackend.API.Validators.Group;
 using ToDoBackend.API.Validators.ToDoItem;
 using ToDoBackend.DataContext;
@@ -107,6 +100,10 @@ builder.Services.AddCors(setupAction => setupAction.AddPolicy("lenientPolicy", c
 
 
 //fix swagger auth setup
+if (builder.Environment.IsDevelopment())
+{
+
+
 builder.Services.AddSwaggerGen(options =>
 {
     options.AddSecurityDefinition(name: "Bearer", securityScheme: new OpenApiSecurityScheme
@@ -134,8 +131,7 @@ builder.Services.AddSwaggerGen(options =>
         }
     });
 });
-
-builder.Services.AddControllers();
+}
 
 builder.Services.AddHealthChecks();
 
