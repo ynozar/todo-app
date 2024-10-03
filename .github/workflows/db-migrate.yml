@@ -22,15 +22,15 @@ jobs:
         dotnet-version: '8.0.x'
 
     - name: ls
-      run: ls 
+      run: ls
 
     - name: Restore dependencies
       run: dotnet restore
-      working-directory: ToDoBackend/TodoBackend
+      working-directory: ToDoBackend
 
     - name: Build and publish
       run: dotnet publish -c Release -o out
-      working-directory: ToDoBackend/TodoBackend
+      working-directory: ToDoBackend
 
     - name: Install EF Core tools
       run: dotnet tool install --global dotnet-ef
@@ -43,4 +43,4 @@ jobs:
       env:
         RSA_PRIVATE: ${{ secrets.RSA_PRIVATE }}  # Step-level secret
         DB_CONNECTION: ${{ secrets.DB_CONNECTION }}  # Step-level secret
-      working-directory: ToDoBackend/TodoBackend
+      working-directory: ToDoBackend
