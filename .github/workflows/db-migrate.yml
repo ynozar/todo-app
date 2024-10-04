@@ -26,7 +26,7 @@ jobs:
       working-directory: ToDoBackend
  
     - name: Install EF Core tools
-      run: dotnet tool install --global dotnet-ef --version 9.0.100-rc.1.24452.12
+      run: dotnet tool install --global dotnet-ef --version 9.0.0-rc.1.24451.1
 
     - name: Run EF database update
       run: dotnet ef database update --project ToDoBackend/ToDoBackend.csproj --context ToDoBackend.DataContext.ApplicationDataContext
