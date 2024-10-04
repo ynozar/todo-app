@@ -88,7 +88,7 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-
+builder.Services.AddAuthorization();
 //CORS
 
 builder.Services.AddCors(setupAction => setupAction.AddPolicy("lenientPolicy", corsPolicyBuilder =>
@@ -140,6 +140,7 @@ var app = builder.Build();
 
 app.UseCors("lenientPolicy");
 
+app.UseAuthorization();
 
 app.MapGet("/", () => "Welcome to ToDo!");
 
