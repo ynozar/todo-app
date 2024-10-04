@@ -1,5 +1,5 @@
 # Step 1: Build stage to compile the app with regular .NET SDK
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:9.0.100-rc.1.24452.12 AS build
 
 # Install NativeAOT prerequisites (if needed, not necessary for migration step)
 RUN apt-get update \
@@ -30,7 +30,7 @@ RUN dotnet ef dbcontext optimize
 RUN dotnet publish -c Release -p:PublishAot=true -p:RuntimeIdentifier=linux-arm64 -o /app
 
 # Step 4: Runtime stage (final image)
-FROM mcr.microsoft.com/dotnet/runtime-deps:8.0 AS runtime
+FROM mcr.microsoft.com/dotnet/runtime-deps:9.0.100-rc.1.24452.12 AS runtime
 
 WORKDIR /app
 

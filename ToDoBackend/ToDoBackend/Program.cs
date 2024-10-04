@@ -1,4 +1,5 @@
 ﻿
+using System.Diagnostics;
 using System.Security.Cryptography;
 using System.Text.Json.Serialization;
 using FluentValidation;
@@ -7,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+
 using ToDoBackend;
 using ToDoBackend.API.Validators.Group;
 using ToDoBackend.API.Validators.ToDoItem;
@@ -19,8 +21,11 @@ using ToDoBackend.DTO.Group;
 using ToDoBackend.DTO.ToDoItem;
 using ToDoBackend.DTO.User;
 
+
 //var builder = WebApplication.CreateBuilder(args);
 
+var stopWatch = new Stopwatch();
+stopWatch.Start();
 var builder = WebApplication.CreateSlimBuilder(args);
 
 builder.Services.ConfigureHttpJsonOptions(options =>
@@ -30,7 +35,9 @@ builder.Services.ConfigureHttpJsonOptions(options =>
 
 builder.Services.AddDbContext<ApplicationDataContext>(opt =>
     opt.UseNpgsql(builder.Configuration.GetValue<string>("DB_CONNECTION"))
+   //.UseModel(ApplicationDataContextModel.Instance)
     );
+
 
 builder.Configuration.AddEnvironmentVariables();
 
@@ -161,6 +168,7 @@ app.MapGroup("")
     dbContext.Database.Migrate();
 }
     }
+    Console.WriteLine($" instantiated after {stopWatch.Elapsed:c}");
 app.Run();
 
 
