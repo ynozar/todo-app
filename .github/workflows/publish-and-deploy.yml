@@ -1,9 +1,11 @@
 name: Build and Deploy
 
 on:
-  workflow_call:
   workflow_dispatch:
-
+permissions:
+  packages: write
+  id-token: write
+  attestations: write
 jobs:
   build-and-publish:
     uses: ./.github/workflows/dockerhub-publish.yml
