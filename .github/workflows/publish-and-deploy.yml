@@ -6,7 +6,7 @@ on:
 
 jobs:
   build-and-publish:
-    uses: ./.github/workflows/build-and-publish.yml
+    uses: ./.github/workflows/dockerhub-publish.yml
 
   get-sha:
     runs-on: ubuntu-latest
