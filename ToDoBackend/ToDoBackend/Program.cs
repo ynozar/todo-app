@@ -6,10 +6,12 @@ using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 using ToDoBackend;
+using ToDoBackend.API.Endpoints;
 using ToDoBackend.API.Validators.Group;
 using ToDoBackend.API.Validators.ToDoItem;
 using ToDoBackend.DataContext;
@@ -38,6 +40,8 @@ builder.Services.AddDbContext<ApplicationDataContext>(opt =>
    //.UseModel(ApplicationDataContextModel.Instance)
     );
 
+builder.Services.AddHealthChecks()
+    .AddCheck<DbContextHealthCheck<ApplicationDataContext>>("PostgreSQL");
 
 builder.Configuration.AddEnvironmentVariables();
 
@@ -150,7 +154,7 @@ app.UseCors("lenientPolicy");
 app.UseAuthorization();
 
 app.MapGet("/", () => "Welcome to ToDo!");
-
+app.MapHealthChecks("/health");
 app.MapGroup("")
     .MapToDoEndpoints()
     .MapGroupEndpoints()
