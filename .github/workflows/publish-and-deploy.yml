@@ -6,6 +6,7 @@ permissions:
   packages: write
   id-token: write
   attestations: write
+  contents: read  # Add this line to grant read access
 jobs:
   build-and-publish:
     uses: ./.github/workflows/dockerhub-publish.yml
