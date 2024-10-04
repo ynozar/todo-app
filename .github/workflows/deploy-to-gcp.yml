@@ -1,6 +1,12 @@
 name: Deploy to GCP
 
 on:
+  workflow_call:
+    inputs:
+      commit_hash:
+        type: string
+      action:
+        type: string
   workflow_dispatch:
     inputs:
       commit_hash:
