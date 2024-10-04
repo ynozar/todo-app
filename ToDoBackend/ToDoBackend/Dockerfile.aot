@@ -1,5 +1,5 @@
 # Step 1: Build stage to compile the app with regular .NET SDK
-FROM mcr.microsoft.com/dotnet/sdk:9.0.100-rc.1.24452.12 AS build
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 
 # Install NativeAOT prerequisites (if needed, not necessary for migration step)
 RUN apt-get update \
