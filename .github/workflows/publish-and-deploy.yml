@@ -1,4 +1,4 @@
-name: Build and Deploy
+name: Publish and Deploy
 
 on:
   workflow_call:
@@ -10,15 +10,19 @@ jobs:
 
   get-sha:
     runs-on: ubuntu-latest
+    outputs:
+      sha_short: ${{ steps.get_sha.outputs.sha_short }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
       - name: Get commit SHA
         id: get_sha
-        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+
   deploy:
-    uses: ./.github/workflows/deploy-to-gcp.yml  #
+    needs: get-sha
+    uses: ./.github/workflows/deploy-to-gcp.yml
     with:
-      commit_hash: ${{ steps.get_sha.outputs.sha_short }}
+      commit_hash: ${{ needs.get-sha.outputs.sha_short }}
       action: 'apply'
