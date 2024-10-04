@@ -1,4 +1,4 @@
-name: Publish and Deploy
+name: Build and Deploy
 
 on:
   workflow_call:
