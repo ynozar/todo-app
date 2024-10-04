@@ -10,6 +10,7 @@ permissions:
 jobs:
   build-and-publish:
     uses: ./.github/workflows/dockerhub-publish.yml
+    secrets: inherit
 
   get-sha:
     needs: build-and-publish
@@ -27,6 +28,7 @@ jobs:
   deploy:
     needs: get-sha
     uses: ./.github/workflows/deploy-to-gcp.yml
+    secrets: inherit 
     with:
       commit_hash: ${{ needs.get-sha.outputs.sha_short }}
       action: 'apply'
