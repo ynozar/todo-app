@@ -1,19 +1,13 @@
 ﻿
 using System.Security.Cryptography;
-using System.Text;
+using System.Text.Json.Serialization;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.OpenApi;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using Swashbuckle.AspNetCore.Filters;
 using ToDoBackend;
-using ToDoBackend.API.Validators;
 using ToDoBackend.API.Validators.Group;
 using ToDoBackend.API.Validators.ToDoItem;
 using ToDoBackend.DataContext;
@@ -23,8 +17,16 @@ using ToDoBackend.Domain.Services.Interfaces;
 using ToDoBackend.DTO;
 using ToDoBackend.DTO.Group;
 using ToDoBackend.DTO.ToDoItem;
+using ToDoBackend.DTO.User;
 
-var builder = WebApplication.CreateBuilder(args);
+//var builder = WebApplication.CreateBuilder(args);
+
+var builder = WebApplication.CreateSlimBuilder(args);
+
+builder.Services.ConfigureHttpJsonOptions(options =>
+    {
+      options.SerializerOptions.TypeInfoResolverChain.Insert(0, AppJsonSerializerContext.Default);
+    });
 
 builder.Services.AddDbContext<ApplicationDataContext>(opt =>
     opt.UseNpgsql(builder.Configuration.GetValue<string>("DB_CONNECTION"))
@@ -86,7 +88,7 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-
+builder.Services.AddAuthorization();
 //CORS
 
 builder.Services.AddCors(setupAction => setupAction.AddPolicy("lenientPolicy", corsPolicyBuilder =>
@@ -98,6 +100,8 @@ builder.Services.AddCors(setupAction => setupAction.AddPolicy("lenientPolicy", c
 
 
 //fix swagger auth setup
+
+
 builder.Services.AddSwaggerGen(options =>
 {
     options.AddSecurityDefinition(name: "Bearer", securityScheme: new OpenApiSecurityScheme
@@ -126,7 +130,6 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
-builder.Services.AddControllers();
 
 builder.Services.AddHealthChecks();
 
@@ -137,14 +140,14 @@ var app = builder.Build();
 
 app.UseCors("lenientPolicy");
 
+app.UseAuthorization();
 
 app.MapGet("/", () => "Welcome to ToDo!");
 
 app.MapGroup("")
     .MapToDoEndpoints()
     .MapGroupEndpoints()
-    .MapUserEndpoints()
-    .MapControllers();
+    .MapUserEndpoints();
 
     app.UseSwagger();
     app.UseSwaggerUI();
@@ -161,3 +164,18 @@ app.MapGroup("")
 app.Run();
 
 
+[JsonSerializable(typeof(CreateToDoItemRequest))]
+[JsonSerializable(typeof(PatchToDoItemRequest))]
+[JsonSerializable(typeof(ToDoItemResponse))]
+[JsonSerializable(typeof(UpdateToDoItemRequest))]
+[JsonSerializable(typeof(CreateGroupRequest))]
+[JsonSerializable(typeof(GroupResponse))]
+[JsonSerializable(typeof(UpdateGroupRequest))]
+[JsonSerializable(typeof(CreateAccountRequest))]
+[JsonSerializable(typeof(DeleteAccountRequest))]
+[JsonSerializable(typeof(LoginRequest))]
+[JsonSerializable(typeof(UserResponse))]
+[JsonSerializable(typeof(DeletionRequest))]
+[JsonSerializable(typeof(DeletionResponse))]
+    internal partial class AppJsonSerializerContext : JsonSerializerContext
+{ }

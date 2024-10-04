@@ -1,7 +1,7 @@
 
 resource "google_cloud_run_service" "todo_api" {
   name     = "todo-api"
-  location = "us-central1" # Change as necessary
+  location = var.region # Change as necessary
 
   template {
     spec {
@@ -36,7 +36,7 @@ resource "google_cloud_run_service_iam_member" "todo_api_invoker" {
 
 resource "google_cloud_run_service" "todo_ui" {
   name     = "todo-ui"
-  location = "us-central1" # Change as necessary
+  location = var.region # Change as necessary
 
   template {
     spec {
@@ -58,4 +58,13 @@ resource "google_cloud_run_service_iam_member" "todo_ui_invoker" {
   location     = google_cloud_run_service.todo_ui.location
   role         = "roles/run.invoker"
   member       = "allUsers"
+}
+
+output "api_url" {
+  value = google_cloud_run_service.todo_api.status[0].url
+}
+
+
+output "ui_url" {
+  value = google_cloud_run_service.todo_ui.status[0].url
 }

@@ -28,7 +28,7 @@ services:
   todo-api:
     build:
       context: ToDoBackend/ToDoBackend
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.aot
     container_name: todo-api-container
     image: todo-api:latest
     ports:
@@ -42,7 +42,7 @@ services:
     env_file:
       - .env
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=aot
 volumes:
   db_volume:
     external: false
