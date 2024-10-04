@@ -8,7 +8,7 @@ permissions:
   attestations: write
 jobs:
   build-and-publish:
-    uses: ./.github/workflows/dockerhub-publish.yml
+    uses: .github/workflows/dockerhub-publish.yml
 
   get-sha:
     runs-on: ubuntu-latest
