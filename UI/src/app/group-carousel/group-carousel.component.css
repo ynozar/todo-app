@@ -1,0 +1,23 @@
+.carousel-container {
+  overflow: hidden;
+  /* Set a fixed width for the carousel container */
+  width: 100%;
+}
+
+:root {
+  --custom: white;
+}
+
+
+.progress-custom::-moz-progress-bar {
+  border-radius: var(--rounded-box, 1rem);
+  --tw-bg-opacity: 1;
+  background-color: var(--custom,oklch(var(--custom)/var(--tw-bg-opacity)));
+}
+.progress-custom:indeterminate {
+  --progress-color: var(--custom,oklch(var(--custom)/1));
+}
+.progress-custom::-webkit-progress-value {
+  --tw-bg-opacity: 1;
+  background-color: var(--custom,oklch(var(--custom)/var(--tw-bg-opacity)));
+}

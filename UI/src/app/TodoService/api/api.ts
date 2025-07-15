@@ -1,0 +1,11 @@
+export * from './groups.service';
+import { GroupsService } from './groups.service';
+export * from './health.service';
+import { HealthService } from './health.service';
+export * from './home.service';
+import { HomeService } from './home.service';
+export * from './toDos.service';
+import { ToDosService } from './toDos.service';
+export * from './users.service';
+import { UsersService } from './users.service';
+export const APIS = [GroupsService, HealthService, HomeService, ToDosService, UsersService];

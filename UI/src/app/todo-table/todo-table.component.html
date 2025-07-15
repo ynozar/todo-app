@@ -1,0 +1,63 @@
+<div class=" test-table ">
+  <div class="w-full flex items-center justify-between ">
+    <p class="text-2xl font-bold">ToDos</p>
+    <a href="todo/create{{singleGroup?'?group='+groups[0].uid:''}}"><button class="btn btn-success text-2xl">+</button></a>
+  </div>
+  <br>
+  <div class="overflow-x-auto">
+  <table class="table table-zebra ">
+    <!-- head -->
+    <thead class="bg-base-200 ">
+    <tr>
+      <th>
+        Status
+      </th>
+      <th>Title</th>
+      <th>Priority</th>
+      <th class="max-md:hidden">Description</th>
+      <th>Due Date</th>
+      <th class="max-md:hidden"></th>
+      <th>Group</th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+
+    <!-- row 1 -->
+    <tr *ngFor="let todo of getTodos()" class="" [ngClass]="{'opacity-50':todo.isComplete}">
+      <th>
+        <label>
+          <input type="checkbox" class="checkbox" [defaultChecked]="todo.isComplete" (change)="patchTodoStatus(todo.uid,$event)" />
+        </label>
+      </th>
+      <td>
+        <div class="flex items-center gap-3">
+          <div>
+            <a href="todo/{{todo.uid}}">
+              <div class="font-bold">{{ todo.title }}</div></a>
+          </div>
+        </div>
+      </td>
+      <td>
+        <app-rating [rating]=todo.priority (ratingChange)="patchTodoPriority(todo.uid,$event)"></app-rating>
+      </td>
+      <td class="max-md:hidden">{{trimDescription(todo.description)}}</td>
+      <td class="">{{extractDate(todo.dueAt)}}</td>
+      <td class="max-md:hidden"><app-countdown [targetDate]=todo.dueAt [todo]=todo></app-countdown></td>
+      <td><span class="badge text-nowrap border-transparent badge-sm " [style.background-color]="getGroupColor(todo)[0]" [style.color]="getGroupColor(todo)[1]">{{ getGroupName(todo) }}</span></td>
+      <th>
+        <div class="join">
+          <a href="todo/{{todo.uid}}">
+        <button class="btn btn-ghost btn-xs hover:bg-yellow-300 join-item"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg></button>
+          </a>
+            <button (click)="deleteTodo(todo.uid)" class="btn btn-ghost btn-xs hover:bg-red-300 join-item"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg></button>
+        </div>
+      </th>
+    </tr>
+    </tbody>
+
+
+  </table>
+    </div>
+</div>
+

@@ -1,0 +1,36 @@
+name: Migrate DB
+
+on:
+  workflow_dispatch:
+
+jobs:
+  Migration:
+    runs-on: ubuntu-latest
+  
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up .NET
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: '9.0.x'
+        include-prerelease: true
+
+    - name: Restore dependencies
+      run: dotnet restore
+      working-directory: ToDoBackend
+
+    - name: Build and publish
+      run: dotnet publish -c Release -o out 
+      working-directory: ToDoBackend
+ 
+    - name: Install EF Core tools
+      run: dotnet tool install --global dotnet-ef --version 9.0.0
+
+    - name: Run EF database update
+      run: dotnet ef database update --project ToDoBackend/ToDoBackend.csproj --context ToDoBackend.DataContext.ApplicationDataContext
+      env:
+        RSA_PRIVATE: ${{ secrets.RSA_PRIVATE }}  # Step-level secret
+        DB_CONNECTION: ${{ secrets.DB_PROD_CONNECTION }}  # Step-level secret
+      working-directory: ToDoBackend

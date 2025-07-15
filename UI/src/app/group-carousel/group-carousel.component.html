@@ -1,0 +1,29 @@
+<div class="carousel-container">
+  <div class="min-w-full flex items-center justify-between">
+    <p class="text-2xl font-bold">Groups</p>
+    <button (click)="addGroupDialog()" class="btn btn-success text-2xl">+</button>
+
+  </div><br>
+  <div class="">
+<div #sliderRef class="slider carousel carousel-center test-table p-4 space-x-4 bg-base-200 rounded-box">
+  <div *ngFor="let group of getGroups()" class="carousel-item item">
+    <a href="group/{{group.uid}}">
+
+      <div class="btn card w-80 h-full bg-base-100 shadow-xl ">
+        <div class="card-body">
+
+          <h2 class="card-title">{{group.name}}</h2>
+          <p class="text-left">{{getGroupCount(group)}} Items</p>
+          <div class="card-actions justify-start">
+            <progress class="progress w-56 progress-custom" [ngStyle]="{'--custom':getGroupColor(group)}"  value="{{getFillValue(group)}}" max="100"></progress>
+          </div>
+        </div>
+      </div>
+    </a>
+  </div>
+</div>
+
+
+
+</div>
+</div>

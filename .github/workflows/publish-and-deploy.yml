@@ -1,0 +1,35 @@
+name: Build and Deploy
+
+on:
+  workflow_dispatch:
+permissions:
+  packages: write
+  id-token: write
+  attestations: write
+  contents: read  # Add this line to grant read access
+jobs:
+
+  build-and-publish:
+    uses: ./.github/workflows/dockerhub-publish.yml
+    secrets: inherit
+
+  get-sha:
+    needs: build-and-publish
+    runs-on: ubuntu-latest
+    outputs:
+      sha_short: ${{ steps.get_sha.outputs.sha_short }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Get commit SHA
+        id: get_sha
+        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+
+  deploy:
+    needs: get-sha
+    uses: ./.github/workflows/deploy-to-gcp.yml
+    with:
+      commit_hash: ${{ needs.get-sha.outputs.sha_short }}
+      action: 'apply'
+    secrets: inherit 

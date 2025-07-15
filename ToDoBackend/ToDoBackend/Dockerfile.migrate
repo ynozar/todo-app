@@ -1,0 +1,18 @@
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS migrate
+WORKDIR /App
+
+# Copy everything
+COPY . ./
+# Restore as distinct layers
+RUN dotnet restore
+# Build and publish a release
+RUN dotnet publish -c Release -o out
+
+# Install the EF Core tools
+RUN dotnet tool install --global dotnet-ef
+
+# Update PATH to include the tools
+ENV PATH="$PATH:/root/.dotnet/tools"
+
+ENTRYPOINT ["dotnet", "ef","database", "update", "--project","ToDoBackend.csproj","--context","ToDoBackend.DataContext.ApplicationDataContext"]
+

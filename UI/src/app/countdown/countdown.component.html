@@ -1,0 +1,17 @@
+<div class="grid grid-flow-col gap-1 text-center auto-cols-max"  [ngClass]="{'hidden':hidden}">
+  <div class="flex flex-col p-2 bg-neutral box rounded text-neutral-content" [ngClass]="{'bg-red-700':(hours+minutes+seconds==0&&!todo.isComplete)}" >
+    <span class="countdown font-mono">
+      <span id="hours"  [ngStyle]="{'--value':hours}"></span>
+    </span>
+  </div><p class="font-extrabold">:</p>
+  <div class="flex flex-col p-2 bg-neutral box rounded text-neutral-content" [ngClass]="{'bg-red-700':(hours+minutes+seconds==0&&!todo.isComplete)}">
+    <span class="countdown font-mono">
+      <span id="minutes" [ngStyle]="{'--value':minutes}"></span>
+    </span>
+  </div><p class="font-extrabold">:</p>
+  <div class="flex flex-col p-2 bg-neutral box rounded text-neutral-content" [ngClass]="{'bg-red-700':(hours+minutes+seconds==0&&!todo.isComplete)}">
+    <span class="countdown font-mono">
+      <span id="seconds" [ngStyle]="{'--value':seconds}"></span>
+    </span>
+  </div>
+</div>

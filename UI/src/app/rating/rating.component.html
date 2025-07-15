@@ -1,0 +1,8 @@
+
+<div class="rating">
+  <input type="checkbox" name="rating-2" class="rating-hidden" [disabled]="!canBeEmpty" [checked]="rating==0" />
+  <input type="checkbox" name="rating-2" class="mask mask-star-2 bg-orange-400 " [disabled]="!canBeEmpty&&rating==1" [checked]="rating==1" (click)="toggleSelection($event,1)"/>
+  <input type="checkbox" name="rating-2" class="mask mask-star-2 bg-orange-400" [disabled]="!canBeEmpty&&rating==2" [checked]="rating==2" (click)="toggleSelection($event,2)" />
+  <input type="checkbox" name="rating-2" class="mask mask-star-2 bg-orange-400" [disabled]="!canBeEmpty&&rating==3" [checked]="rating==3" (click)="toggleSelection($event,3)"/>
+</div>
+
